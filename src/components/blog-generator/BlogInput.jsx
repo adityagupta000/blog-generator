@@ -1,19 +1,33 @@
 // src/components/blog-generator/BlogInput.jsx
-import { Loader2, Sparkles, Zap, ArrowRight, RefreshCw, Brain, AlertCircle } from 'lucide-react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
-import { Button } from '../ui/button';
-import { Textarea } from '../ui/textarea';
-import { Alert, AlertDescription } from '../ui/alert';
-import ExamplePrompts from './ExamplePrompts';
-import { PROMPT_CONFIG } from '../../utils/constants';
+import {
+  Loader2,
+  Sparkles,
+  Zap,
+  ArrowRight,
+  RefreshCw,
+  Brain,
+  AlertCircle,
+} from "lucide-react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../ui/card";
+import { Button } from "../ui/button";
+import { Textarea } from "../ui/textarea";
+import { Alert, AlertDescription } from "../ui/alert";
+import ExamplePrompts from "./ExamplePrompts";
+import { PROMPT_CONFIG } from "../../utils/constants";
 
-export default function BlogInput({ 
-  prompt, 
-  setPrompt, 
-  isLoading, 
-  error, 
+export default function BlogInput({
+  prompt,
+  setPrompt,
+  isLoading,
+  error,
   onGenerate,
-  onReset 
+  onReset,
 }) {
   const handleExampleSelect = (example) => {
     setPrompt(example);
@@ -27,7 +41,8 @@ export default function BlogInput({
           Create Your Blog
         </CardTitle>
         <CardDescription className="text-base">
-          Describe your topic in detail. The more specific you are, the better the results.
+          Describe your topic in detail. The more specific you are, the better
+          the results.
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
@@ -42,7 +57,9 @@ export default function BlogInput({
             maxLength={PROMPT_CONFIG.MAX_LENGTH}
           />
           <div className="flex items-center justify-between text-sm text-muted-foreground">
-            <span>{prompt.length}/{PROMPT_CONFIG.MAX_LENGTH} characters</span>
+            <span>
+              {prompt.length}/{PROMPT_CONFIG.MAX_LENGTH} characters
+            </span>
             {prompt && (
               <Button
                 variant="ghost"
@@ -58,7 +75,7 @@ export default function BlogInput({
           </div>
         </div>
 
-        <ExamplePrompts 
+        <ExamplePrompts
           onSelectPrompt={handleExampleSelect}
           disabled={isLoading}
         />
@@ -73,7 +90,7 @@ export default function BlogInput({
         <Button
           onClick={onGenerate}
           disabled={isLoading || !prompt.trim()}
-          className="w-full h-12 text-base"
+          className="w-half justify-center h-12 text-base"
           size="lg"
         >
           {isLoading ? (
@@ -85,19 +102,9 @@ export default function BlogInput({
             <>
               <Zap className="mr-2 h-5 w-5" />
               Generate Professional Blog
-              <ArrowRight className="ml-2 h-4 w-4" />
             </>
           )}
         </Button>
-
-        <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground">
-          <span className="inline-flex items-center gap-1">
-            <Brain className="h-3 w-3" />
-            Powered by Llama 3.3 70B
-          </span>
-          <span>•</span>
-          <span>Average generation: 5-10 seconds</span>
-        </div>
       </CardContent>
     </Card>
   );

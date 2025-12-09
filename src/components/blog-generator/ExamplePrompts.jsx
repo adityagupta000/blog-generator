@@ -6,7 +6,7 @@ export default function ExamplePrompts({ onSelectPrompt, disabled }) {
   return (
     <div className="space-y-3">
       <p className="text-sm font-medium">
-        Need inspiration? Try these examples:
+        Try these examples
       </p>
       <div className="grid gap-2 sm:grid-cols-2">
         {EXAMPLE_PROMPTS.map((example, index) => (

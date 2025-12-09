@@ -2,11 +2,8 @@
 import { useEffect } from "react";
 import { toast } from "sonner";
 import { useBlogGenerator } from "../../hooks/useBlogGenerator";
-import { FEATURES } from "../../utils/constants";
-import HeroSection from "./HeroSection";
 import BlogInput from "./BlogInput";
 import BlogOutput from "./BlogOutput";
-import FeatureCards from "./FeatureCards";
 
 export default function BlogGenerator() {
   const {
@@ -63,9 +60,7 @@ export default function BlogGenerator() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
-      <HeroSection />
-
+    <div>
       <div className="container mx-auto px-4 py-8 md:py-12">
         <div className="max-w-7xl mx-auto space-y-8">
           <BlogInput
@@ -79,8 +74,6 @@ export default function BlogGenerator() {
           />
 
           {blog && <BlogOutput blog={blog} onCopy={handleCopy} />}
-
-          {!blog && !isLoading && <FeatureCards features={FEATURES} />}
         </div>
       </div>
     </div>
