@@ -40,6 +40,7 @@ export default function BlogOutput({ blog, onCopy }) {
               Created on {new Date(blog.timestamp).toLocaleString()}
             </CardDescription>
           </div>
+
           <div className="flex gap-2">
             <Button
               variant="outline"
@@ -59,6 +60,7 @@ export default function BlogOutput({ blog, onCopy }) {
                 </>
               )}
             </Button>
+
             <Button
               variant="outline"
               size="sm"
@@ -105,12 +107,39 @@ export default function BlogOutput({ blog, onCopy }) {
             <TabsTrigger value="markdown">Markdown</TabsTrigger>
           </TabsList>
 
+          {/* ---------------- PREVIEW MODE ---------------- */}
           <TabsContent value="preview" className="mt-6">
-            <div className="prose prose-slate dark:prose-invert max-w-none prose-headings:font-bold prose-h1:text-3xl prose-h2:text-2xl prose-h3:text-xl prose-p:leading-7 prose-li:my-1">
+            <div
+              className="
+    prose prose-slate dark:prose-invert
+    text-left max-w-none
+    prose-headings:font-bold
+    prose-h1:text-3xl
+    prose-h2:text-2xl
+    prose-h3:text-xl
+    prose-p:leading-7
+    prose-li:my-1
+
+    /* ---- FORCE BULLET POINTS ---- */
+    prose-ul:list-disc
+    prose-ol:list-decimal
+    prose-li:marker:text-current
+
+    /* ---- FIX INDENTATION ---- */
+    prose-ul:pl-10 prose-li:pl-2
+    prose-ol:pl-8
+    prose-li:pl-1
+
+    /* extra enforcement */
+    [&_ul]:list-disc
+    [&_li]:list-disc
+  "
+            >
               <ReactMarkdown>{blog.content}</ReactMarkdown>
             </div>
           </TabsContent>
 
+          {/* ---------------- MARKDOWN MODE ---------------- */}
           <TabsContent value="markdown" className="mt-6">
             <pre className="p-6 bg-slate-50 dark:bg-slate-900 rounded-lg overflow-x-auto text-sm">
               <code>{blog.content}</code>
