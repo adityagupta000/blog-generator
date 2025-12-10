@@ -1,20 +1,33 @@
 // api/generate-blog.js
-import fetch from "node-fetch";
-
 export default async function handler(req, res) {
-  // Allow only POST requests
+  // Set CORS headers
+  res.setHeader('Access-Control-Allow-Credentials', true);
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+  // Handle preflight
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+
+  // Only allow POST requests
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
   try {
-    // Vercel DOES NOT auto-parse JSON, so manually parse:
-    const body = req.body || JSON.parse(req.rawBody || "{}");
-    const { prompt } = body;
+    const { prompt } = req.body;
 
     // Validate prompt
     if (!prompt || prompt.trim() === "") {
       return res.status(400).json({ error: "Prompt is required" });
+    }
+
+    // Check if API key exists
+    if (!process.env.GROQ_API_KEY) {
+      console.error("GROQ_API_KEY is not set");
+      return res.status(500).json({ error: "API key not configured" });
     }
 
     // Call GROQ API
@@ -31,8 +44,7 @@ export default async function handler(req, res) {
           messages: [
             {
               role: "user",
-              content: `
-You are a professional blog writer. Write a polished, structured, 1000-word blog in **clean Markdown** that renders perfectly in ReactMarkdown.
+              content: `You are a professional blog writer. Write a polished, structured, 1000-word blog in **clean Markdown** format.
 
 Your response MUST follow this exact structure with correct spacing:
 
@@ -122,8 +134,7 @@ STRICT RULES:
 - Output ONLY the blog. No additional explanation.
 - Title, headings, and subheadings MUST match this Markdown structure.
 
-Write the complete blog on the topic: ${prompt}
-`,
+Write the complete blog on the topic: ${prompt}`,
             },
           ],
           temperature: 0.7,
@@ -135,8 +146,9 @@ Write the complete blog on the topic: ${prompt}
     const data = await groqResponse.json();
 
     if (!groqResponse.ok) {
+      console.error("GROQ API Error:", data);
       return res.status(500).json({
-        error: data.error?.message || "Groq API failed",
+        error: data.error?.message || "Failed to generate blog",
       });
     }
 
@@ -150,6 +162,9 @@ Write the complete blog on the topic: ${prompt}
 
   } catch (error) {
     console.error("SERVER ERROR:", error);
-    return res.status(500).json({ error: "Internal server error" });
+    return res.status(500).json({ 
+      error: "Internal server error",
+      details: error.message 
+    });
   }
 }
