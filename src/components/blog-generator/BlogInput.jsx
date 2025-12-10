@@ -88,7 +88,7 @@ export default function BlogInput({
         <Button
           onClick={onGenerate}
           disabled={isLoading || !prompt.trim()}
-          className="w-full justify-center h-11 sm:h-12 text-sm sm:text-base"
+          className="w-half justify-center h-11 sm:h-12 text-sm sm:text-base"
           size="lg"
         >
           {isLoading ? (
