@@ -60,9 +60,9 @@ export default function BlogGenerator() {
   };
 
   return (
-    <div>
-      <div className="container mx-auto px-4 py-8 md:py-12">
-        <div className="max-w-7xl mx-auto space-y-8">
+    <div className="min-h-screen bg-background">
+      <div className="container mx-auto px-3 sm:px-4 py-6 sm:py-8 md:py-12">
+        <div className="max-w-7xl mx-auto space-y-6 sm:space-y-8">
           <BlogInput
             prompt={prompt}
             setPrompt={setPrompt}
