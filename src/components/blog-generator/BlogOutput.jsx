@@ -135,7 +135,7 @@ export default function BlogOutput({ blog, onCopy }) {
             <div
               className="
                 prose prose-slate dark:prose-invert
-                text-left max-w-none
+                text-justify max-w-none
                 
                 /* Base text sizing - responsive */
                 text-sm sm:text-base
