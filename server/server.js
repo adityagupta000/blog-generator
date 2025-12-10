@@ -1,28 +1,29 @@
-import express from "express";
-import cors from "cors";
-import dotenv from "dotenv";
+// api/generate-blog.js
 import fetch from "node-fetch";
 
-dotenv.config();
+export default async function handler(req, res) {
+  // Allow only POST requests
+  if (req.method !== "POST") {
+    return res.status(405).json({ error: "Method not allowed" });
+  }
 
-const app = express();
-app.use(cors());
-app.use(express.json());
-
-app.post("/api/generate-blog", async (req, res) => {
   try {
-    const { prompt } = req.body;
+    // Vercel DOES NOT auto-parse JSON, so manually parse:
+    const body = req.body || JSON.parse(req.rawBody || "{}");
+    const { prompt } = body;
 
+    // Validate prompt
     if (!prompt || prompt.trim() === "") {
       return res.status(400).json({ error: "Prompt is required" });
     }
 
+    // Call GROQ API
     const groqResponse = await fetch(
       "https://api.groq.com/openai/v1/chat/completions",
       {
         method: "POST",
         headers: {
-          "Authorization": `Bearer ${process.env.GROQ_API_KEY}`,
+          Authorization: `Bearer ${process.env.GROQ_API_KEY}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
@@ -64,7 +65,7 @@ Short explanation paragraph.
 
 ## **3. Benefits**
 
-Write this as a **proper Markdown bullet list**.  
+Write this as a **proper Markdown bullet list**.
 You MUST follow the format below EXACTLY:
 
 Example (DO NOT include these exact words):
@@ -83,7 +84,7 @@ Now write the actual benefits below, following that format:
 
 ## **4. Challenges**
 
-Write this section as a **proper Markdown bullet list**.  
+Write this section as a **proper Markdown bullet list**.
 Follow the same formatting rules:
 
 Example (DO NOT include these exact words):
@@ -122,7 +123,7 @@ STRICT RULES:
 - Title, headings, and subheadings MUST match this Markdown structure.
 
 Write the complete blog on the topic: ${prompt}
-`
+`,
             },
           ],
           temperature: 0.7,
@@ -142,17 +143,12 @@ Write the complete blog on the topic: ${prompt}
     const blogText = data.choices?.[0]?.message?.content || "";
 
     if (!blogText.trim()) {
-      return res.status(500).json({ error: "Empty blog response" });
+      return res.status(500).json({ error: "Empty blog response from model" });
     }
 
-    return res.json({ blog: blogText });
-
+    return res.status(200).json({ blog: blogText });
   } catch (error) {
     console.error("SERVER ERROR:", error);
-    return res.status(500).json({ error: "Server error" });
+    return res.status(500).json({ error: "Internal server error" });
   }
-});
-
-app.listen(process.env.PORT, () => {
-  console.log(`Server running on port ${process.env.PORT}`);
-});
+}
