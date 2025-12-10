@@ -70,7 +70,7 @@ export default function BlogOutput({ blog, onCopy }) {
               )}
             </Button>
 
-            <Button
+            {/* <Button
               variant="outline"
               size="sm"
               onClick={handleDownload}
@@ -78,7 +78,7 @@ export default function BlogOutput({ blog, onCopy }) {
             >
               <Download className="h-3.5 w-3.5 sm:h-4 sm:w-4 flex-shrink-0" />
               <span className="text-xs sm:text-sm">Download</span>
-            </Button>
+            </Button> */}
           </div>
         </div>
 
@@ -121,14 +121,14 @@ export default function BlogOutput({ blog, onCopy }) {
 
       <CardContent className="p-4 sm:p-6">
         <Tabs value={viewMode} onValueChange={setViewMode}>
-          <TabsList className="grid w-full max-w-md grid-cols-2 h-9 sm:h-10">
+          {/* <TabsList className="grid w-full max-w-md grid-cols-2 h-9 sm:h-10">
             <TabsTrigger value="preview" className="text-xs sm:text-sm">
               Preview
             </TabsTrigger>
             <TabsTrigger value="markdown" className="text-xs sm:text-sm">
               Markdown
             </TabsTrigger>
-          </TabsList>
+          </TabsList> */}
 
           {/* ---------------- PREVIEW MODE ---------------- */}
           <TabsContent value="preview" className="mt-4 sm:mt-6">
